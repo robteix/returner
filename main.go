@@ -10,9 +10,10 @@ import (
 func main() {
 	listen := flag.String("l", ":8080", "listen to")
 	defaultCode := flag.Int("code", 502, "Default HTTP return code")
+	errorOptions := flag.Bool("error-on-options", false, "Whether it should error on OPTIONS")
 	flag.Parse()
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != "GET" {
+		if r.Method == "OPTIONS" && !*errorOptions {
 			w.WriteHeader(200)
 			return
 		}
