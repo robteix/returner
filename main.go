@@ -12,6 +12,10 @@ func main() {
 	defaultCode := flag.Int("code", 502, "Default HTTP return code")
 	flag.Parse()
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			w.WriteHeader(200)
+			return
+		}
 		codeS := r.URL.Query().Get("code")
 		code, err := strconv.Atoi(codeS)
 		if err != nil || code == 0 {
